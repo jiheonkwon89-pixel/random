@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>리본쪄니&올리브3 이벤트 당첨 추천기</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --card: rgba(255, 255, 255, 0.08);
+        --card2: rgba(255, 255, 255, 0.06);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.68);
+        --line: rgba(255, 255, 255, 0.14);
+        --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+        --accent: #7c5cff;
+        --accent2: #00d4ff;
+        --danger: #ff4d6d;
+        --ok: #00d08b;
+        --radius: 18px;
+        --pad: 16px;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f6f8ff;
+          --card: rgba(255, 255, 255, 0.82);
+          --card2: rgba(255, 255, 255, 0.72);
+          --text: rgba(15, 18, 30, 0.92);
+          --muted: rgba(15, 18, 30, 0.62);
+          --line: rgba(15, 18, 30, 0.12);
+          --shadow: 0 16px 42px rgba(25, 35, 75, 0.12);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+        background: radial-gradient(1200px 700px at 30% -10%, rgba(124, 92, 255, 0.45), transparent 55%),
+          radial-gradient(900px 600px at 95% 10%, rgba(0, 212, 255, 0.25), transparent 60%),
+          radial-gradient(1000px 700px at 50% 120%, rgba(0, 208, 139, 0.18), transparent 55%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 22px);
+      }
+
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .title {
+        display: grid;
+        gap: 6px;
+      }
+      h1 {
+        font-size: 20px;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      .sub {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+      .chip {
+        flex: none;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        font-size: 12px;
+        color: var(--muted);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+      @media (min-width: 860px) {
+        .grid {
+          grid-template-columns: 1.15fr 0.85fr;
+          align-items: start;
+        }
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--card), var(--card2));
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 15px;
+        letter-spacing: -0.01em;
+      }
+      .card .head {
+        padding: 14px var(--pad);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .card .body {
+        padding: var(--pad);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 170px;
+        resize: vertical;
+        padding: 12px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        outline: none;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+      textarea:focus {
+        border-color: rgba(124, 92, 255, 0.55);
+        box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.16);
+      }
+      .hint {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.35;
+      }
+
+      .btnRow {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      @media (min-width: 540px) {
+        .btnRow {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      button {
+        width: 100%;
+        border: 0;
+        border-radius: 14px;
+        padding: 14px 14px;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .primary {
+        background: linear-gradient(135deg, rgba(124, 92, 255, 0.92), rgba(0, 212, 255, 0.58));
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .danger {
+        background: linear-gradient(135deg, rgba(255, 77, 109, 0.92), rgba(255, 164, 178, 0.35));
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .badge {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+      .badge strong {
+        color: var(--text);
+      }
+
+      .list {
+        margin: 0;
+        padding: 0 0 0 18px;
+        max-height: 290px;
+        overflow: auto;
+        overscroll-behavior: contain;
+      }
+      .list li {
+        padding: 6px 6px;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+      }
+      @media (prefers-color-scheme: light) {
+        .list li {
+          border-bottom-color: rgba(15, 18, 30, 0.1);
+        }
+      }
+      .list li:last-child {
+        border-bottom: 0;
+      }
+
+      .resultBox {
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        padding: 14px 14px;
+      }
+      .resultTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .resultTitle .left {
+        display: grid;
+        gap: 4px;
+      }
+      .resultTitle .kicker {
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .resultTitle .main {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: -0.01em;
+      }
+      .resultList {
+        margin: 0;
+        padding: 0 0 0 18px;
+      }
+      .resultList li {
+        padding: 8px 6px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.96);
+        border-radius: 10px;
+      }
+      @media (prefers-color-scheme: light) {
+        .resultList li {
+          color: rgba(15, 18, 30, 0.92);
+        }
+      }
+      .winner {
+        background: linear-gradient(135deg, rgba(124, 92, 255, 0.28), rgba(0, 212, 255, 0.16));
+        border: 1px solid rgba(255, 255, 255, 0.16);
+      }
+      @media (prefers-color-scheme: light) {
+        .winner {
+          border-color: rgba(15, 18, 30, 0.12);
+        }
+      }
+
+      .alert {
+        margin-top: 10px;
+        padding: 12px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+      .alert strong {
+        color: var(--text);
+      }
+      .alert.danger {
+        border-color: rgba(255, 77, 109, 0.5);
+        background: rgba(255, 77, 109, 0.12);
+      }
+      .alert.ok {
+        border-color: rgba(0, 208, 139, 0.45);
+        background: rgba(0, 208, 139, 0.12);
+      }
+
+      #confetti {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="confetti" aria-hidden="true"></canvas>
+
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <h1>리본쪄니&amp;올리브3 이벤트 당첨 추천기</h1>
+          <p class="sub">ID를 한 줄에 하나씩 입력하고, 목록 적용 → 랜덤 5명 뽑기를 누르세요. (모바일 최적화)</p>
+        </div>
+        <div class="chip" id="statusChip">대기 중</div>
+      </header>
+
+      <div class="grid">
+        <section class="card" aria-label="ID 입력 카드">
+          <div class="head">
+            <h2>ID 입력</h2>
+            <div class="meta">
+              <span class="badge">정리 후 <strong id="countPreview">0</strong>명</span>
+            </div>
+          </div>
+          <div class="body">
+            <textarea
+              id="idInput"
+              inputmode="text"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
+              placeholder="예)
+user01
+user02
+user03
+..."
+            ></textarea>
+            <div class="hint">
+              - 공백 줄은 자동 제거됩니다.<br />
+              - 중복 ID는 유지됩니다.<br />
+              - 최대 25~100개 정도까지 무난합니다.
+            </div>
+
+            <div class="btnRow">
+              <button class="primary" id="applyBtn" type="button">목록 적용</button>
+              <button class="danger" id="resetBtn" type="button">목록 초기화</button>
+            </div>
+
+            <div id="alertBox" class="alert" role="status" aria-live="polite">
+              <strong>안내</strong> 목록 적용을 누르면 입력된 ID가 정리되어 표시됩니다.
+            </div>
+          </div>
+        </section>
+
+        <div class="gridRight" style="display: grid; gap: 14px;">
+          <section class="card" aria-label="입력된 ID 목록 카드">
+            <div class="head">
+              <h2>입력된 ID 목록</h2>
+              <div class="meta">
+                <span class="badge">총 <strong id="countLabel">0</strong>명 입력됨</span>
+              </div>
+            </div>
+            <div class="body">
+              <ol id="idList" class="list"></ol>
+            </div>
+          </section>
+
+          <section class="card" aria-label="추첨 결과 카드">
+            <div class="head">
+              <h2>추첨 결과</h2>
+              <div class="meta">
+                <span class="badge">중복 없이 <strong>5</strong>명</span>
+              </div>
+            </div>
+            <div class="body">
+              <div class="btnRow" style="margin-top: 0;">
+                <button class="primary" id="drawBtn" type="button">랜덤 5명 뽑기</button>
+              </div>
+
+              <div style="height: 10px;"></div>
+
+              <div class="resultBox">
+                <div class="resultTitle">
+                  <div class="left">
+                    <div class="kicker" id="resultKicker">결과는 여기 표시됩니다</div>
+                    <p class="main" style="margin: 0;">🎉 추첨 결과 🎉</p>
+                  </div>
+                  <span class="badge" id="timeBadge" title="마지막 추첨 시각">--:--</span>
+                </div>
+                <ol id="resultList" class="resultList"></ol>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const state = {
+        ids: [],
+        lastWinners: [],
+        shuffleTimer: null,
+        isShuffling: false,
+      };
+
+      const $ = (sel) => document.querySelector(sel);
+      const idInput = $("#idInput");
+      const applyBtn = $("#applyBtn");
+      const resetBtn = $("#resetBtn");
+      const drawBtn = $("#drawBtn");
+      const idList = $("#idList");
+      const countLabel = $("#countLabel");
+      const countPreview = $("#countPreview");
+      const alertBox = $("#alertBox");
+      const statusChip = $("#statusChip");
+      const resultList = $("#resultList");
+      const resultKicker = $("#resultKicker");
+      const timeBadge = $("#timeBadge");
+      const confettiCanvas = $("#confetti");
+
+      function nowHHMM() {
+        const d = new Date();
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        return `${hh}:${mm}`;
+      }
+
+      function setAlert(kind, title, message) {
+        alertBox.classList.remove("danger", "ok");
+        if (kind === "danger") alertBox.classList.add("danger");
+        if (kind === "ok") alertBox.classList.add("ok");
+        alertBox.innerHTML = `<strong>${escapeHtml(title)}</strong> ${escapeHtml(message)}`;
+      }
+
+      function setStatus(text) {
+        statusChip.textContent = text;
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, (m) => {
+          switch (m) {
+            case "&":
+              return "&amp;";
+            case "<":
+              return "&lt;";
+            case ">":
+              return "&gt;";
+            case '"':
+              return "&quot;";
+            case "'":
+              return "&#39;";
+            default:
+              return m;
+          }
+        });
+      }
+
+      function normalizeIds(rawText) {
+        const lines = rawText
+          .split(/\r?\n/)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
+        return lines;
+      }
+
+      function shuffledCopy(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function pickUnique(arr, n) {
+        const s = shuffledCopy(arr);
+        return s.slice(0, n);
+      }
+
+      function renderIdList() {
+        idList.innerHTML = "";
+        countLabel.textContent = String(state.ids.length);
+        countPreview.textContent = String(state.ids.length);
+
+        const frag = document.createDocumentFragment();
+        for (const id of state.ids) {
+          const li = document.createElement("li");
+          li.textContent = id;
+          frag.appendChild(li);
+        }
+        idList.appendChild(frag);
+      }
+
+      function clearResult() {
+        resultList.innerHTML = "";
+        resultKicker.textContent = "결과는 여기 표시됩니다";
+        timeBadge.textContent = "--:--";
+        state.lastWinners = [];
+      }
+
+      function renderResult(winners, { isFinal }) {
+        resultList.innerHTML = "";
+        const frag = document.createDocumentFragment();
+        winners.forEach((id) => {
+          const li = document.createElement("li");
+          li.textContent = id;
+          if (isFinal) li.classList.add("winner");
+          frag.appendChild(li);
+        });
+        resultList.appendChild(frag);
+
+        if (isFinal) {
+          resultKicker.textContent = "추첨 완료! 축하합니다";
+          timeBadge.textContent = nowHHMM();
+        } else {
+          resultKicker.textContent = "랜덤 셔플 중…";
+        }
+      }
+
+      function stopShuffleIfAny() {
+        if (state.shuffleTimer) {
+          clearInterval(state.shuffleTimer);
+          state.shuffleTimer = null;
+        }
+        state.isShuffling = false;
+        drawBtn.disabled = false;
+        applyBtn.disabled = false;
+        resetBtn.disabled = false;
+      }
+
+      function createConfettiEngine(canvas) {
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const colors = ["#7c5cff", "#00d4ff", "#00d08b", "#ffd166", "#ff4d6d", "#ffffff"];
+        let raf = null;
+        let particles = [];
+        let runningUntil = 0;
+
+        function resize() {
+          const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+          canvas.width = Math.floor(window.innerWidth * dpr);
+          canvas.height = Math.floor(window.innerHeight * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function spawnBurst() {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          const originX = w * (0.2 + Math.random() * 0.6);
+          const originY = h * (0.1 + Math.random() * 0.2);
+          const count = 140;
+
+          for (let i = 0; i < count; i++) {
+            const angle = (-Math.PI / 2) + (Math.random() - 0.5) * 1.15;
+            const speed = 6 + Math.random() * 9;
+            particles.push({
+              x: originX,
+              y: originY,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              g: 0.22 + Math.random() * 0.18,
+              rot: Math.random() * Math.PI,
+              vr: (Math.random() - 0.5) * 0.25,
+              size: 5 + Math.random() * 6,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              life: 900 + Math.random() * 700,
+              born: performance.now(),
+              shape: Math.random() < 0.75 ? "rect" : "circle",
+            });
+          }
+        }
+
+        function tick(t) {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          ctx.clearRect(0, 0, w, h);
+
+          const next = [];
+          for (const p of particles) {
+            const age = t - p.born;
+            if (age > p.life) continue;
+
+            p.vy += p.g;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+
+            p.vx *= 0.995;
+            p.vy *= 0.995;
+
+            const alpha = Math.max(0, 1 - age / p.life);
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = p.color;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            if (p.shape === "rect") {
+              ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+            } else {
+              ctx.beginPath();
+              ctx.arc(0, 0, p.size * 0.35, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.restore();
+
+            if (p.y < h + 60 && p.x > -60 && p.x < w + 60) next.push(p);
+          }
+
+          ctx.globalAlpha = 1;
+          particles = next;
+
+          if (t < runningUntil || particles.length > 0) {
+            raf = requestAnimationFrame(tick);
+          } else {
+            raf = null;
+            ctx.clearRect(0, 0, w, h);
+          }
+        }
+
+        function celebrate(durationMs = 1200) {
+          resize();
+          spawnBurst();
+          spawnBurst();
+          runningUntil = performance.now() + durationMs;
+          if (!raf) raf = requestAnimationFrame(tick);
+        }
+
+        window.addEventListener("resize", resize, { passive: true });
+        resize();
+
+        return { celebrate };
+      }
+
+      const confetti = createConfettiEngine(confettiCanvas);
+
+      function applyList() {
+        stopShuffleIfAny();
+
+        const ids = normalizeIds(idInput.value);
+        state.ids = ids;
+        renderIdList();
+        clearResult();
+
+        if (ids.length === 0) {
+          setAlert("danger", "경고", "ID가 없습니다. 한 줄에 하나씩 ID를 입력해 주세요.");
+          setStatus("ID 없음");
+          return;
+        }
+
+        setAlert("ok", "완료", `총 ${ids.length}명 적용되었습니다. 이제 랜덤 추첨이 가능합니다.`);
+        setStatus("목록 적용됨");
+      }
+
+      function resetAll() {
+        stopShuffleIfAny();
+        idInput.value = "";
+        state.ids = [];
+        renderIdList();
+        clearResult();
+        setAlert("ok", "초기화", "입력된 ID와 목록/결과를 모두 삭제했습니다.");
+        setStatus("초기화됨");
+      }
+
+      function canDrawOrWarn() {
+        if (state.ids.length === 0) {
+          setAlert("danger", "경고", "먼저 ID를 입력하고 '목록 적용'을 눌러주세요.");
+          setStatus("대기");
+          return false;
+        }
+        if (state.ids.length < 5) {
+          setAlert("danger", "추첨 불가", "ID가 5개 미만입니다. 최소 5개 이상 필요합니다.");
+          setStatus("추첨 불가");
+          return false;
+        }
+        return true;
+      }
+
+      function startDraw() {
+        if (!canDrawOrWarn()) return;
+        if (state.isShuffling) return;
+
+        setStatus("추첨 중");
+        setAlert("ok", "진행", "1초간 셔플 후 최종 결과를 보여드립니다.");
+
+        state.isShuffling = true;
+        drawBtn.disabled = true;
+        applyBtn.disabled = true;
+        resetBtn.disabled = true;
+
+        clearResult();
+
+        const targetCount = 5;
+        const start = performance.now();
+        const duration = 1000;
+        const tickMs = 90;
+
+        state.shuffleTimer = setInterval(() => {
+          const elapsed = performance.now() - start;
+          const demo = pickUnique(state.ids, targetCount);
+          renderResult(demo, { isFinal: false });
+          if (elapsed >= duration) {
+            clearInterval(state.shuffleTimer);
+            state.shuffleTimer = null;
+
+            const winners = pickUnique(state.ids, targetCount);
+            state.lastWinners = winners;
+            renderResult(winners, { isFinal: true });
+            confetti.celebrate(1400);
+
+            setAlert("ok", "완료", "새 추첨 결과를 표시했습니다.");
+            setStatus("추첨 완료");
+
+            state.isShuffling = false;
+            drawBtn.disabled = false;
+            applyBtn.disabled = false;
+            resetBtn.disabled = false;
+          }
+        }, tickMs);
+      }
+
+      applyBtn.addEventListener("click", applyList);
+      resetBtn.addEventListener("click", resetAll);
+      drawBtn.addEventListener("click", startDraw);
+
+      idInput.addEventListener(
+        "input",
+        () => {
+          const ids = normalizeIds(idInput.value);
+          countPreview.textContent = String(ids.length);
+        },
+        { passive: true }
+      );
+
+      renderIdList();
+      clearResult();
+    </script>
+  </body>
+</html>
+
